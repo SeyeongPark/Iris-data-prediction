@@ -5,8 +5,7 @@ import { Form } from 'react-bootstrap';
 import { Jumbotron, Button } from 'react-bootstrap';
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from 'react-router-dom';
-
-
+import './Design.css';
 
 export default function InputData(){
 
@@ -17,15 +16,11 @@ export default function InputData(){
         petalWidth: '',
         epochs: 100});
 
-    const [showLoading, setShowLoading] = useState(false);
-
-    const [resultTest, setResultTest] = useState();
-    
+    const [showLoading, setShowLoading] = useState(false);    
     const apiUrl = "http://localhost:3000/test";
     const navigate = useNavigate();
-    const SaveData = async (e) => {
+    const SaveData = async () => {
         setShowLoading(true);
-        e.preventDefault();
         const data = {
             sepalLength: parseFloat(testSet.sepalLength),
             sepalWidth: parseFloat(testSet.sepalWidth),
@@ -33,26 +28,31 @@ export default function InputData(){
             petalWidth: parseFloat(testSet.petalWidth),
             epochs: parseInt(testSet.epochs),
         };
-
-        if(testSet.epochs < 1){
-          window.alert('Epoches should be more than 1');
-          setShowLoading(false);
+        if(testSet.sepalLength > 0 && testSet.sepalWidth > 0 && testSet.petalLength > 0 && testSet.petalWidth > 0){
+          if(testSet.epochs < 1){
+            window.alert('Epochs should be more than 1');
+            setShowLoading(false);
+          }
+          else{
+            const resultTest = await axios.post(apiUrl, data);
+            axios.post(apiUrl, data)
+                .then(() => {
+                    setShowLoading(false);
+                }).catch(() => setShowLoading(false));
+    
+                if(resultTest !== undefined){
+                    navigate('/result', { state: resultTest.data.resultForData });
+                }
+                else{
+                    window.alert('The result is undefined. Please check inputs')
+                }
+          }
         }
         else{
-          const resultTest = await axios.post(apiUrl, data);
-          axios.post(apiUrl, data)
-              .then((res) => {
-                  setShowLoading(false);
-                  setResultTest(res.data.resultForData);
-              }).catch((err) => setShowLoading(false));
-  
-              if(resultTest !== undefined){
-                  navigate('/result', { state: resultTest.data.resultForData });
-              }
-              else{
-                  window.alert('The result is undefined. Please check inputs')
-              }
+          window.alert('Please check input value is valid');
+          setShowLoading(false);
         }
+
         
     };
 
@@ -62,46 +62,47 @@ export default function InputData(){
     }
       
     return (
-        <div>
+      <div className="wrapper">
         {showLoading === true ?
+
           showLoading && 
+          <h1>Testing.. <br/><br/>
           <Spinner animation="border" role="status">
               <span className="sr-only"></span>
-            </Spinner> 
-        
+          </Spinner> 
+          </h1>
         :
-
-        <Jumbotron>
+        <div class="jumbotron">
           <Form>
             <Form.Group>
-              <Form.Label> sepalLength</Form.Label>
+              <Form.Label> Length of sepal</Form.Label>
               <Form.Control name="sepalLength" id="sepalLength" 
             value={testSet.studentNum} onChange = {onChange} required/>
             </Form.Group>
             <Form.Group>
-              <Form.Label> sepalWidth</Form.Label>
+              <Form.Label> Width of pepal</Form.Label>
               <Form.Control name="sepalWidth" id="sepalWidth" 
                value={testSet.sepalWidth} onChange = {onChange} required/>
             </Form.Group>
             <Form.Group>
-              <Form.Label> petalLength</Form.Label>
+              <Form.Label> Length of petal</Form.Label>
               <Form.Control  name="petalLength" id="petalLength" 
               value={testSet.petalLength} onChange = {onChange} required/>
             </Form.Group>
             <Form.Group>
-              <Form.Label> petalWidth</Form.Label>
-              <Form.Control  name="petalWidth" id="petalWidth" value={testSet.petalWidth} onChange = {onChange} />
+              <Form.Label> Width of petal</Form.Label>
+              <Form.Control  name="petalWidth" id="petalWidth" value={testSet.petalWidth} onChange = {onChange} required/>
             </Form.Group>
             <Form.Group>
-              <Form.Label> Epochs</Form.Label>
-              <Form.Control name="epochs" id="epochs" value={testSet.epochs} min="1" onChange = {onChange} />
+              <Form.Label> Epochs </Form.Label>
+              <Form.Control name="epochs" id="epochs" placeholder='recommend more than 100' value={testSet.epochs} min="1" onChange = {onChange} required/>
             </Form.Group>
 
-            <Button onClick={SaveData} variant="primary" type="submit">
-                Save
-            </Button>
+            <button className="styled-sm" onClick={SaveData} variant="primary" type="submit">
+                Test
+            </button>
             </Form>
-        </Jumbotron>
+        </div>
         }
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import './Home.css';
+import './Design.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Home()
