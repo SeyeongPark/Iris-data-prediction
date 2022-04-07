@@ -51,4 +51,15 @@ img {
     margin-top: 3%;
     font-size: 20px;
   }
+
+.wrapper h4{
+    margin-top: 2em;
+}
+
+.wrapper h5{
+    margin-bottom: 2em;
+}
   
+.wrapper label{
+    font-size: 20px;
+}

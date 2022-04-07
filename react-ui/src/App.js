@@ -32,7 +32,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<InputData />} />
           <Route path="/result" element={<Result />} />
-        {/* <Route render ={()=> < InputData />} path="/test" /> */}
         </Routes>
       </div>
 

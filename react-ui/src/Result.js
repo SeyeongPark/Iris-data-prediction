@@ -2,7 +2,7 @@ import React from 'react';
 import './Result.css';
 import { Form } from 'react-bootstrap';
 import { useLocation } from "react-router-dom";
-import { Jumbotron } from 'react-bootstrap';
+import './Design.css';
 
 function Result() {
 
@@ -20,14 +20,13 @@ function Result() {
     }
 
   return (
-    <div> 
-         <Jumbotron>
+    <div className="wrapper">
+        <div class="jumbotron">
             <h1>Prediction Results</h1>
-            <h2> the values for species will be:</h2>
-
+            <h5> the values for species will be:</h5>
             <Form>
               <Form.Group>
-                <Form.Label>setosa :</Form.Label>
+                <label>setosa :</label>
                 <Form.Control
                   type="text"
                   readOnly
@@ -51,10 +50,10 @@ function Result() {
                 />
               </Form.Group>
 
-              <h2>Probability, it is a <span class="stress">{chanceSpecies}</span> </h2>
+              <h4>Probability, it is a <span class="stress">{chanceSpecies}</span> </h4>
             </Form>
 
-            </Jumbotron>
+            </div>
               
           </div>
   );

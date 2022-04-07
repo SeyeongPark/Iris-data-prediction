@@ -2,7 +2,6 @@ import React, { useState }  from 'react';
 import axios from 'axios';
 import './bootstrap.min.css';
 import { Form } from 'react-bootstrap';
-import { Jumbotron, Button } from 'react-bootstrap';
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from 'react-router-dom';
 import './Design.css';
@@ -104,10 +103,6 @@ export default function InputData(){
             </Form>
         </div>
         }
-
-
-
-
         </div>
       );
     }
