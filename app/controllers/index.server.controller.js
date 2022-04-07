@@ -1,8 +1,10 @@
+//
+//https://github.com/PacktPublishing/Hands-on-Machine-Learning-with-TensorFlow.js/tree/master/Section5_4
+//
 const tf = require('@tensorflow/tfjs');
     // require('@tensorflow/tfjs-node');
     //load iris training and testing data
     const iris = require('../../iris.json');
-    // const irisTesting = require('../../iris-testing.json');
     var lossValue;
     //
 exports.trainAndPredict = function (req, res) {
@@ -27,37 +29,25 @@ exports.trainAndPredict = function (req, res) {
         item.species === "virginica" ? 1 : 0,
         item.species === "versicolor" ? 1 : 0
     ]))
-    //console.log(outputData.dataSync())
-    //
-
-
-    //   // call value from InputData component
-    // const sepalLength = props.location.state?.sepalLength;
-    // const sepalWidth = props.location.state?.sepalWidth;
-    // const petalLength = props.location.state?.petalLength;
-    // const petalWidth = props.location.state?.petalWidth;
-
 
     const testData = [
         {
             sepal_length: req.body.sepalLength,
             sepal_width: req.body.sepalWidth,
             petal_length: req.body.petalLength,
-            petal_width: req.body.petalWidth
+            petal_width: req.body.petalWidth,
+            species: req.body.species
         }
     ]
-    // need to modify -> input parameter
+    const inputEpochs = req.body.epochs;
+
+    //console.log(outputData.dataSync())
+    //
     //tensor of features for testing data
-    const testingData = tf.tensor2d(testData.map(item =>[
+    const testingData = tf.tensor2d(testData.map(item => [
         item.sepal_length, item.sepal_width,
         item.petal_length, item.petal_width,
-    ])
-        // [5.7,3.9,1.7,0.4], [1,4]
-        // [5.9,3,5.1,1.8], [1,4]
-        // [5.7,2.9,4.2,1.3], [1,4]
-        // [{sepalLength}, {sepalWidth}, {petalLength}, {petalWidth}], [1,4]
-        )
-
+    ]))
     //console.log(testingData.dataSync())    
     //
     // build neural network using a sequential model
@@ -82,19 +72,19 @@ exports.trainAndPredict = function (req, res) {
     //compile the model with an MSE loss function and Adam algorithm
     model.compile({
         loss: "meanSquaredError",
-        optimizer: tf.train.adam(.06), // need to modify --> input param
+        optimizer: tf.train.adam(.06),
     })
     console.log(model.summary())
     //
     //Train the model and predict the results for testing data
     //
     // train/fit the model for the fixed number of epochs
-    // async function run() {
+    async function run() {
         const startTime = Date.now()
         //train the model
-        model.fit(trainingData, outputData,         
+        await model.fit(trainingData, outputData,         
             {
-                epochs: 10,  // the number need to modify --> input param
+                epochs: inputEpochs,
                 callbacks: { //list of callbacks to be called during training
                     onEpochEnd: async (epoch, log) => {
                         lossValue = log.loss;
@@ -105,38 +95,24 @@ exports.trainAndPredict = function (req, res) {
                 }
             }
             
-        ).then(()=>{
-            const results = model.predict(testingData);
-
-            results.array().then(array => {
-            var resultForData = array[0];
-            var dataToSent = {row: resultForData}
-            // res.status(200).send({dataToSent});
-            res.status(200)
-            .send(dataToSent)
-            .end();
-            console.log('send data')
-        })
-        });
+        )
             
-        // const results = model.predict(testingData);
-        // console.log('prediction results: ', results.dataSync())
-        // results.print()
+        const results = model.predict(testingData);
         
         // get the values from the tf.Tensor
-        //var tensorData = results.dataSync();
-        // results.array().then(array => {
-        //     var resultForData = array[0];
+        results.array().then(array => {
+            console.log(array[0][0])
+            var resultForData = array[0];
+            console.log(resultForData)
+            res.status(200)
+            .send({
+                resultForData : resultForData
+            });
 
-        //     var dataToSent = {row: resultForData}
-        //     // res.status(200).send({dataToSent});
-        //     res.status(200)
-        //     .send({resultForData: resultForData, testStatus: true})
-        //     .end();
-        // })
-        // //
+        })
+        //
 
-    // } //end of run function
-    // run()
+    } //end of run function
+    run()
 
 };
