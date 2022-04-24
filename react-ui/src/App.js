@@ -15,17 +15,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   
     return (
-      <Router>
 
-      <Navbar bg="light" expand="lg">
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/test">Test</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      
+      <Router>
+      <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="/">SPTech</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="/" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/test">Test</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     
       <div>
         <Routes>

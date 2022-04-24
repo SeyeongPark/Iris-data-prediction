@@ -61,16 +61,17 @@ export default function InputData(){
     }
       
     return (
-      <div className="wrapper">
+      <div className="loading">
         {showLoading === true ?
-
           showLoading && 
           <h1>Testing.. <br/><br/>
           <Spinner animation="border" role="status">
               <span className="sr-only"></span>
           </Spinner> 
+          <h2></h2>
           </h1>
         :
+        <div className="wrapper">
         <div class="jumbotron">
           <Form>
             <Form.Group>
@@ -101,6 +102,7 @@ export default function InputData(){
                 Test
             </button>
             </Form>
+        </div>
         </div>
         }
         </div>
