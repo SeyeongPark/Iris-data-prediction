@@ -16,7 +16,8 @@
         "express-session": "^1.15.6",
         "method-override": "^2.3.10",
         "morgan": "^1.10.0",
-        "reactstrap": "^9.0.1"
+        "reactstrap": "^9.0.1",
+        "serve": "^13.0.2"
     },
     "devDependencies": {
         "nodemon": "^2.0.7"
